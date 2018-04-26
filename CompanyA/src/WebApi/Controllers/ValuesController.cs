@@ -1,42 +1,51 @@
 ﻿namespace TechnicalTests.CompanyA.WebApi.Controllers
 {
+    using System;
     using System.Collections.Generic;
+    using System.Drawing;
+    using System.Net.Http;
+    using System.Threading.Tasks;
+
+    using Core.Entities;
+    using Core.ImageAnalysis;
+    using Core.Infrastructure.Repositories;
 
     using Microsoft.AspNetCore.Mvc;
 
+    // TODO: Name
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
-        // GET api/values
+        private readonly IReferenceColorMatchingStrategy _referenceColorMatchingStrategy;
+        private readonly IReferenceColorRepository _referenceColorRepository;
+
+        public ValuesController(
+            IReferenceColorMatchingStrategy referenceColorMatchingStrategy, 
+            IReferenceColorRepository referenceColorRepository)
+        {
+            _referenceColorMatchingStrategy = referenceColorMatchingStrategy ?? throw new ArgumentNullException(nameof(referenceColorMatchingStrategy));
+            _referenceColorRepository = referenceColorRepository ?? throw new ArgumentNullException(nameof(referenceColorRepository));
+        }
+
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<List<ReferenceColorMatch>> Get(Uri imageUri)
         {
-            return new string[] { "value1", "value2" };
+            var image = await DownloadImageAsync(imageUri);
+
+            var referenceColors = _referenceColorRepository.GetAll();
+
+            return _referenceColorMatchingStrategy.Match(image, referenceColors);
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        // TODO: Move
+        private async Task<Bitmap> DownloadImageAsync(Uri requestUri)
         {
-            return "value";
-        }
-
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody]string value)
-        {
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            using (var client = new HttpClient())
+            using (var request = new HttpRequestMessage(HttpMethod.Get, requestUri))
+            using (var contentStream = await (await client.SendAsync(request)).Content.ReadAsStreamAsync())
+            {
+                return new Bitmap(contentStream);
+            }
         }
     }
 }

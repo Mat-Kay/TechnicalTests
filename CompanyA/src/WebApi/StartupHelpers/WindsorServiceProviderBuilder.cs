@@ -2,8 +2,14 @@
 {
     using System;
 
+    using Castle.MicroKernel.Registration;
     using Castle.Windsor;
     using Castle.Windsor.MsDependencyInjection;
+
+    using Core.ImageAnalysis;
+    using Core.Infrastructure.Repositories;
+
+    using Infrastructure.StaticTestData;
 
     using Microsoft.Extensions.DependencyInjection;
 
@@ -20,6 +26,9 @@
 
         private void RegisterComponents(WindsorContainer container)
         {
+            container.Register(Component.For<IMeanColorCalculator>().ImplementedBy<MeanColorCalculator>().LifeStyle.Transient);
+            container.Register(Component.For<IReferenceColorMatchingStrategy>().ImplementedBy<MeanEuclideanDistanceReferenceColorMatcher>().LifeStyle.Transient);
+            container.Register(Component.For<IReferenceColorRepository>().ImplementedBy<ReferenceColorRepository>().LifeStyle.Transient);
         }
     }
 }
