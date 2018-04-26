@@ -23,8 +23,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TechnicalTests.CompanyA.Core\Core.csproj" />
-    <ProjectReference Include="..\TechnicalTests.CompanyA.Infrastructure.StaticTestData\Infrastructure.StaticTestData.csproj" />
+    <ProjectReference Include="..\Core\Core.csproj" />
+    <ProjectReference Include="..\Infrastructure.StaticTestData\Infrastructure.StaticTestData.csproj" />
   </ItemGroup>
 
 </Project>
