@@ -2,12 +2,12 @@
 {
     using System;
 
+    using global::WebApi.StartupHelpers;
+
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-
-    using StartupHelpers;
 
     using Swashbuckle.AspNetCore.Swagger;
 

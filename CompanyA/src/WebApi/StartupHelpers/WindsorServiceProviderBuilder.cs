@@ -1,4 +1,4 @@
-﻿namespace TechnicalTests.CompanyA.WebApi.StartupHelpers
+﻿namespace WebApi.StartupHelpers
 {
     using System;
 
@@ -13,6 +13,8 @@
 
     using Microsoft.Extensions.DependencyInjection;
 
+    using Services;
+
     public class WindsorServiceProviderBuilder
     {
         public IServiceProvider Build(IServiceCollection services)
@@ -26,6 +28,8 @@
 
         private void RegisterComponents(WindsorContainer container)
         {
+            container.Register(Component.For<IReferenceColorMatchingService>().ImplementedBy<ReferenceColorMatchingService>().LifeStyle.Transient);
+
             container.Register(Component.For<IMeanColorCalculator>().ImplementedBy<MeanColorCalculator>().LifeStyle.Transient);
             container.Register(Component.For<IReferenceColorMatchingStrategy>().ImplementedBy<MeanEuclideanDistanceReferenceColorMatcher>().LifeStyle.Transient);
             container.Register(Component.For<IReferenceColorRepository>().ImplementedBy<ReferenceColorRepository>().LifeStyle.Transient);
