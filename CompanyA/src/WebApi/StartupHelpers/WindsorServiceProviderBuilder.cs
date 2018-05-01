@@ -6,8 +6,8 @@
     using Castle.Windsor;
     using Castle.Windsor.MsDependencyInjection;
 
-    using Core.ImageAnalysis;
     using Core.Infrastructure.Repositories;
+    using Core.Services.ImageAnalysis;
 
     using Infrastructure.StaticTestData;
 

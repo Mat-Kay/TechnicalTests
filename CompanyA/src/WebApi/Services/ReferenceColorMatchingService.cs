@@ -7,8 +7,8 @@
     using System.Threading.Tasks;
 
     using Core.Entities;
-    using Core.ImageAnalysis;
     using Core.Infrastructure.Repositories;
+    using Core.Services.ImageAnalysis;
 
     public class ReferenceColorMatchingService : IReferenceColorMatchingService
     {

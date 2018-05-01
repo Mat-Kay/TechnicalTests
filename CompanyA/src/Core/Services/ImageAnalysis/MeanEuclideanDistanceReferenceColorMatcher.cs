@@ -1,4 +1,4 @@
-﻿namespace Core.ImageAnalysis
+﻿namespace Core.Services.ImageAnalysis
 {
     using System;
     using System.Collections.Generic;
