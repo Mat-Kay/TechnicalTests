@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace Core.Infrastructure.Repositories
+﻿namespace Core.Infrastructure.Repositories
 {
+    using System.Collections.Generic;
+
     using Entities;
 
     public interface IReferenceColorRepository

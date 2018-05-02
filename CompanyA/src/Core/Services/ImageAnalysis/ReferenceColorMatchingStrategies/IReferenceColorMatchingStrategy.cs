@@ -1,4 +1,4 @@
-﻿namespace Core.Services.ImageAnalysis
+﻿namespace Core.Services.ImageAnalysis.ReferenceColorMatchingStrategies
 {
     using System.Collections.Generic;
     using System.Drawing;

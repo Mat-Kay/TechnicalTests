@@ -8,13 +8,13 @@
     {
         public Color GetMeanColor(Bitmap bmp)
         {
-            var rgbTotals = CalculateRgbTotals(bmp);
+            var (redTotal, greenTotal, blueTotal) = CalculateRgbTotals(bmp);
 
             long pixelCount = bmp.Width * bmp.Height;
 
-            var averageRed = Convert.ToInt32(rgbTotals.Red / pixelCount);
-            var averageGreen = Convert.ToInt32(rgbTotals.Green / pixelCount);
-            var averageBlue = Convert.ToInt32(rgbTotals.Blue / pixelCount);
+            var averageRed = Convert.ToInt32(redTotal / pixelCount);
+            var averageGreen = Convert.ToInt32(greenTotal / pixelCount);
+            var averageBlue = Convert.ToInt32(blueTotal / pixelCount);
 
             return Color.FromArgb(averageRed, averageGreen, averageBlue);
         }
@@ -31,7 +31,7 @@
 
             unsafe
             {
-                var p = (byte*) (void*) imageBits.Scan0;
+                var p = (byte*)(void*)imageBits.Scan0;
 
                 for (var y = 0; y < bmp.Height; y++)
                 {

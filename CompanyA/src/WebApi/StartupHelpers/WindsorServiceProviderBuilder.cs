@@ -8,6 +8,7 @@
 
     using Core.Infrastructure.Repositories;
     using Core.Services.ImageAnalysis;
+    using Core.Services.ImageAnalysis.ReferenceColorMatchingStrategies;
 
     using Infrastructure.StaticTestData;
 
@@ -28,11 +29,26 @@
 
         private void RegisterComponents(WindsorContainer container)
         {
-            container.Register(Component.For<IReferenceColorMatchingService>().ImplementedBy<ReferenceColorMatchingService>().LifeStyle.Transient);
+            RegisterWebApiServices(container);
+            RegisterCoreServices(container);
+            RegisterInfrastructure(container);
+        }
 
-            container.Register(Component.For<IMeanColorCalculator>().ImplementedBy<MeanColorCalculator>().LifeStyle.Transient);
-            container.Register(Component.For<IReferenceColorMatchingStrategy>().ImplementedBy<MeanEuclideanDistanceReferenceColorMatcher>().LifeStyle.Transient);
+        private static void RegisterInfrastructure(WindsorContainer container)
+        {
             container.Register(Component.For<IReferenceColorRepository>().ImplementedBy<ReferenceColorRepository>().LifeStyle.Transient);
+        }
+
+        private static void RegisterCoreServices(WindsorContainer container)
+        {
+            container.Register(Component.For<IMeanColorCalculator>().ImplementedBy<MeanColorCalculator>().LifeStyle.Transient);
+            container.Register(Component.For<IReferenceColorMatcher>().ImplementedBy<ReferenceColorMatcher>().LifeStyle.Transient);
+            container.Register(Component.For<IReferenceColorMatchingStrategy>().ImplementedBy<MeanEuclideanDistanceReferenceColorMatchingStrategy>().LifeStyle.Transient);
+        }
+
+        private static void RegisterWebApiServices(WindsorContainer container)
+        {
+            container.Register(Component.For<IReferenceColorMatchingService>().ImplementedBy<ReferenceColorMatchingService>().LifeStyle.Transient);
         }
     }
 }

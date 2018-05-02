@@ -1,4 +1,4 @@
-﻿namespace Core.Services.ImageAnalysis
+﻿namespace Core.Services.ImageAnalysis.ReferenceColorMatchingStrategies
 {
     using System;
     using System.Collections.Generic;
@@ -7,11 +7,11 @@
 
     using Entities;
 
-    public class MeanEuclideanDistanceReferenceColorMatcher : IReferenceColorMatchingStrategy
+    public class MeanEuclideanDistanceReferenceColorMatchingStrategy : IReferenceColorMatchingStrategy
     {
         private readonly IMeanColorCalculator _meanColorCalculator;
 
-        public MeanEuclideanDistanceReferenceColorMatcher(IMeanColorCalculator meanColorCalculator)
+        public MeanEuclideanDistanceReferenceColorMatchingStrategy(IMeanColorCalculator meanColorCalculator)
         {
             _meanColorCalculator = meanColorCalculator ?? throw new ArgumentNullException(nameof(meanColorCalculator));
         }
@@ -20,16 +20,24 @@
         {
             var meanColor = _meanColorCalculator.GetMeanColor(image);
 
-            // TODO: Some form of confidence calculation
-            // TODO: Better return model
             return referenceColors
-                .Select(r => new ReferenceColorMatch(r, GetEuclideanDistanceBetweenColors(r.Color, meanColor)))
-                .OrderBy(r => r.Confidence)
+                .Select(r => MatchColor(r, meanColor))
                 .ToList();
+        }
+
+        private ReferenceColorMatch MatchColor(ReferenceColor r, Color meanColor)
+        {
+            var distance = GetEuclideanDistanceBetweenColors(r.Color, meanColor);
+
+            var confidence = CalculateConfidence(distance, 255);
+
+            return new ReferenceColorMatch(r, confidence);
         }
 
         private int GetEuclideanDistanceBetweenColors(Color a, Color b)
         {
+            int Square(int i) => i * i;
+
             var redComponent = a.R - b.R;
             var greenComponent = a.G - b.G;
             var blueComponent = a.B - b.B;
@@ -37,7 +45,11 @@
             return (int)Math.Sqrt(Square(redComponent) + Square(greenComponent) + Square(blueComponent));
         }
 
-        private int Square(int i)
-            => i * i;
+        private double CalculateConfidence(double value, double upperLimit = 1)
+        {
+            var normalizedValue = value / upperLimit;
+
+            return Math.Pow((Math.Cos(normalizedValue * Math.PI) + 1) / 2, 2);
+        }
     }
 }

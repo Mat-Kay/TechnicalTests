@@ -1,7 +1,6 @@
 ﻿namespace WebApi.Services
 {
     using System;
-    using System.Collections.Generic;
     using System.Drawing;
     using System.Net.Http;
     using System.Threading.Tasks;
@@ -12,24 +11,25 @@
 
     public class ReferenceColorMatchingService : IReferenceColorMatchingService
     {
-        private readonly IReferenceColorMatchingStrategy _referenceColorMatchingStrategy;
+        private readonly IReferenceColorMatcher _referenceColorMatcher;
         private readonly IReferenceColorRepository _referenceColorRepository;
 
         public ReferenceColorMatchingService(
-            IReferenceColorMatchingStrategy referenceColorMatchingStrategy,
+            IReferenceColorMatcher referenceColorMatcher,
             IReferenceColorRepository referenceColorRepository)
         {
-            _referenceColorMatchingStrategy = referenceColorMatchingStrategy;
+            _referenceColorMatcher = referenceColorMatcher;
             _referenceColorRepository = referenceColorRepository;
         }
 
-        public async Task<List<ReferenceColorMatch>> ReferenceColorMatches(Uri imageUri)
+        public async Task<ReferenceColorMatcherResult> MatchReferenceColorFromImageUri(Uri imageUri)
         {
-            var image = await DownloadImageAsync(imageUri);
+            using (var image = await DownloadImageAsync(imageUri))
+            {
+                var referenceColors = _referenceColorRepository.GetAll();
 
-            var referenceColors = _referenceColorRepository.GetAll();
-
-            return _referenceColorMatchingStrategy.Match(image, referenceColors);
+                return _referenceColorMatcher.Match(image, referenceColors);
+            }
         }
 
         private async Task<Bitmap> DownloadImageAsync(Uri requestUri)

@@ -3,6 +3,7 @@
     using System;
 
     using global::WebApi.StartupHelpers;
+    using Core.Entities;
 
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -33,6 +34,7 @@
                 c.SwaggerDoc(SwaggerVersion, new Info { Title = SwaggerTitle, Version = SwaggerVersion });
             });
 
+            services.Configure<ReferenceColorMatchingSettings>(Configuration.GetSection("ReferenceColorMatching"));
             return new WindsorServiceProviderBuilder().Build(services);
         }
 
