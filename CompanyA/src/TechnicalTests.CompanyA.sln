@@ -15,6 +15,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_stylecop", "_stylecop", "{
 		_stylecop\StyleCopeRules.ruleset = _stylecop\StyleCopeRules.ruleset
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A66C1520-28EC-4E6B-B50F-7BF013DDBCA0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Tests", "Core.Tests\Core.Tests.csproj", "{7DB65A3D-0E0C-469C-BD87-D65E7E0DDC15}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,9 +37,16 @@ Global
 		{83483BE6-562A-4329-A4F9-E56155D902F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83483BE6-562A-4329-A4F9-E56155D902F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83483BE6-562A-4329-A4F9-E56155D902F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DB65A3D-0E0C-469C-BD87-D65E7E0DDC15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DB65A3D-0E0C-469C-BD87-D65E7E0DDC15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DB65A3D-0E0C-469C-BD87-D65E7E0DDC15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DB65A3D-0E0C-469C-BD87-D65E7E0DDC15}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7DB65A3D-0E0C-469C-BD87-D65E7E0DDC15} = {A66C1520-28EC-4E6B-B50F-7BF013DDBCA0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5E77207D-2AC8-47C7-97C1-30326DF58E25}
