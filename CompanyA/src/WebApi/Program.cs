@@ -1,5 +1,7 @@
 ﻿namespace TechnicalTests.CompanyA.WebApi
 {
+    using global::WebApi;
+
     using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;
 

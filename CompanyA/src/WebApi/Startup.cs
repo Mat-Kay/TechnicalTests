@@ -1,14 +1,16 @@
-﻿namespace TechnicalTests.CompanyA.WebApi
+﻿namespace WebApi
 {
     using System;
+    using System.IO;
 
-    using global::WebApi.StartupHelpers;
     using Core.Entities;
 
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+
+    using StartupHelpers;
 
     using Swashbuckle.AspNetCore.Swagger;
 
@@ -32,9 +34,17 @@
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc(SwaggerVersion, new Info { Title = SwaggerTitle, Version = SwaggerVersion });
+                c.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "WebApi.xml"));
+            });
+
+            services.AddMvc().AddJsonOptions(options =>
+            {
+                options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter(true));
+                options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
             });
 
             services.Configure<ReferenceColorMatchingSettings>(Configuration.GetSection("ReferenceColorMatching"));
+
             return new WindsorServiceProviderBuilder().Build(services);
         }
 
@@ -44,14 +54,15 @@
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-
-                app.UseSwagger();
-
-                app.UseSwaggerUI(c =>
-                {
-                    c.SwaggerEndpoint($"/swagger/{SwaggerVersion}/swagger.json", SwaggerTitle);
-                });
             }
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint($"/swagger/{SwaggerVersion}/swagger.json", SwaggerTitle);
+                c.RoutePrefix = "swagger";
+            });
 
             app.UseMvc();
         }
